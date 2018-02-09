@@ -1,0 +1,23 @@
+= Command Method Pattern
+
+This documentation was developed for the Software Design and Architecture class, at the Tecnológico de Monterrey by Mario Lagunes Nava (A01374648) and Brandon Alain Cruz Ruiz (A01375640).
+
+== Overview
+
+The Command pattern translates very smoothly into code blocks. Command pattern command is an instruction to do something, something specific. A Command pattern command can be filled—or executed—right now, or later, or when something specific happens. a command is simply a wrapper around some code that knows how to do one specific thing, whose only reason for existence is to run some code at the right time. 
+
+Here is the UML class diagram:
+
+rdoc-image:img/command_class.png
+
+To test the program, inside the +src+ folder type the following instruction at the command line:
+
+ruby twitter_test.rb
+
+or in case it did not work, type the following instruction:
+
+ruby -I -w twitter_test.rb
+
+== References
+
+- \R. Olsen. <em>Design Patterns in Ruby.</em> Addison-Wesley,2007.
