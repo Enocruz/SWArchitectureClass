@@ -10,12 +10,20 @@ It is located in the folder
 templatemethod
 ```
 
-### Activity 2 - Observer
+### Activity 2 - Observer pattern
 
 It is located in the folder
 
 ```
 observer
+```
+
+### Activity 3 - Command pattern
+
+It is located in the folder
+
+```
+command
 ```
 
 ### Class activities
