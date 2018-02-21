@@ -1,0 +1,24 @@
+= Adpter Method Pattern
+
+This documentation was developed for the Software Design and Architecture class, at the Tecnológico de Monterrey by Mario Lagunes Nava (A01374648) and Brandon Alain Cruz Ruiz (A01375640).
+
+== Overview
+
+The Adpter pattern allows the interface of an existing class to be used as another interface. It is often used to make existing classes work with others without modifying their source code.
+The key idea in this pattern is to work through a separate Adapter that adapts the interface of an (already existing) class without changing it.
+
+Here is the UML class diagram:
+
+rdoc-image:img/adapter_class.png
+
+To test the program, inside the +src+ folder type the following instruction at the command line:
+
+ruby adapter_test.rb
+
+or in case it did not work, type the following instruction:
+
+ruby -I -w adapter_test.rb
+
+== References
+
+- \R. Olsen. <em>Design Patterns in Ruby.</em> Addison-Wesley,2007.

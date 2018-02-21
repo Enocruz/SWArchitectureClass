@@ -1,3 +1,6 @@
+# The source code contained in this file is used to
+# test the queue_adapter.rb program.
+
 # Adapter Pattern
 # Date: 22-Feb-2018
 # Authors:
@@ -6,12 +9,15 @@
 
 # File: adapter_test.rb 
 
+# Adding the namespaces require to run the file
 require 'minitest/autorun'
-require 'simple_queue'
-require 'queue_adapter'
+require './simple_queue'
+require './queue_adapter'
 
+# Class declaration
 class QueueAdapterTest < Minitest::Test
 
+  # Tests the queue_adapter class
   def test_queue_adapter
     q = SimpleQueue.new
     qa = QueueAdapter.new(q)
