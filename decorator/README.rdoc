@@ -8,7 +8,7 @@ The Decorator pattern enables you to easily add an enhancement to an existing ob
 
 Here is the UML class diagram:
 
-rdoc-image:img/
+rdoc-image:img/decorator_uml.png
 
 To test the program, inside the +src+ folder type the following instruction at the command line:
 
