@@ -1,0 +1,23 @@
+= Decorator Pattern
+
+This documentation was developed for the Software Design and Architecture class, at the Tecnológico de Monterrey by Mario Lagunes Nava (A01374648) and Brandon Alain Cruz Ruiz (A01375640).
+
+== Overview
+
+The Decorator pattern enables you to easily add an enhancement to an existing object. The Decorator pattern also allows you to layer features atop one another so that you can construct objects that have exactly the right set of capabilities that you need for any given situation.
+
+Here is the UML class diagram:
+
+rdoc-image:img/
+
+To test the program, inside the +src+ folder type the following instruction at the command line:
+
+ruby coffee_test.rb
+
+or in case it did not work, type the following instruction:
+
+ruby -I -w coffee_test.rb
+
+== References
+
+- \R. Olsen. <em>Design Patterns in Ruby.</em> Addison-Wesley,2007.
