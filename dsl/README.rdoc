@@ -1,0 +1,25 @@
+= Command Method Pattern
+
+This documentation was developed for the Software Design and Architecture class, at the Tecnológico de Monterrey by Mario Lagunes Nava (A01374648) and Brandon Alain Cruz Ruiz (A01375640).
+
+== Overview
+
+A Domain-Specific Language, or DSL, is “a programming language of limited expressiveness focused on a particular domain”. It makes tasks in its domain easier by removing extraneous code for a particular task and allowing you to focus on the specific task at hand. It also helps other people read the code, because the purpose of the code is so clear.
+The main idea of the DSL is that we could create a programming language that allows us to write our ideas directly into the computer.
+
+Here is the UML class diagram:
+
+rdoc-image:img/command_class.png
+
+To test the program, inside the +src+ folder type the following instruction at the command line:
+
+ruby twitter_test.rb
+
+or in case it did not work, type the following instruction:
+
+ruby -I -w twitter_test.rb
+
+== References
+
+- \R. Olsen. <em>Design Patterns in Ruby.</em> Addison-Wesley,2007.
+- \G. Berke. <em>Writing a Domain-Specific Language in Ruby</em> Retrieved from https://robots.thoughtbot.com/writing-a-domain-specific-language-in-ruby, 2014
