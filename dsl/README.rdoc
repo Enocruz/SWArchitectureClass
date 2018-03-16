@@ -1,4 +1,4 @@
-= Command Method Pattern
+= Domain Specific Language
 
 This documentation was developed for the Software Design and Architecture class, at the Tecnológico de Monterrey by Mario Lagunes Nava (A01374648) and Brandon Alain Cruz Ruiz (A01375640).
 
@@ -9,15 +9,15 @@ The main idea of the DSL is that we could create a programming language that all
 
 Here is the UML class diagram:
 
-rdoc-image:img/command_class.png
+rdoc-image:img/UML-DSL.jpg
 
 To test the program, inside the +src+ folder type the following instruction at the command line:
 
-ruby twitter_test.rb
+ruby jankenpon.rb
 
 or in case it did not work, type the following instruction:
 
-ruby -I -w twitter_test.rb
+ruby -I -w jankenpon_test.rb
 
 == References
 

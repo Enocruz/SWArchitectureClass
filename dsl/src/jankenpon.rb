@@ -204,9 +204,13 @@ class ScissorsDSL
     end
     
 end
-# Creating the variables
+# Creating the constant paper
 Paper = PaperDSL.new
+# Creating the constant Scissors
 Scissors = ScissorsDSL.new
+# Creating the constant Lizard
 Lizard = LizardDSL.new 
+# Creating the constant Spock
 Spock = SpockDSL.new
+# Creating the constant Rock
 Rock = RockDSL.new

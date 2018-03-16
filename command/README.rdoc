@@ -8,8 +8,7 @@ The Command pattern translates very smoothly into code blocks. Command pattern c
 
 Here is the UML class diagram:
 
-rdoc-image:img/command_class.png
-
+rdoc-image:img/UML-DSL.jpg
 To test the program, inside the +src+ folder type the following instruction at the command line:
 
 ruby twitter_test.rb

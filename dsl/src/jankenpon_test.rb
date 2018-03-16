@@ -9,18 +9,21 @@ require 'minitest/autorun'
 require 'stringio'
 require './jankenpon'
 
+# Class for unit testing
 class JakenponTest < Minitest::Test
 
+  # Setting up the test
   def setup
     @old_stdout = $stdout
     @out = $stdout = StringIO.new
     
   end
-
+    # Called after every test method runs
   def teardown
     $stdout = @old_stdout
   end
 
+  # Running the + method (who is the winner?)
   def test_simple_cases_plus
     assert_equal Scissors, (Scissors + Paper)
     assert_equal Scissors, (Paper + Scissors)
@@ -49,6 +52,7 @@ class JakenponTest < Minitest::Test
     assert_equal Spock,    (Spock + Spock)
   end
 
+  # Running the + method (who is the loser?)
   def test_simple_cases_minus
     assert_equal Paper,    (Scissors - Paper)
     assert_equal Paper,    (Paper - Scissors)
@@ -77,6 +81,7 @@ class JakenponTest < Minitest::Test
     assert_equal Spock,    (Spock - Spock)
   end
 
+  # Testing the show method (simple)
   def test_dsl_1
     #---------
     show Spock
@@ -85,6 +90,7 @@ class JakenponTest < Minitest::Test
       "Result = Spock\n", @out.string
   end
 
+  # Testing the show method (simple)
   def test_dsl_2
     #------------------
     show Spock + Lizard
@@ -94,7 +100,8 @@ class JakenponTest < Minitest::Test
       "Result = Lizard\n", \
       @out.string
   end
-
+  
+  # Testing the show method (simple)
   def test_dsl_3
     #------------------
     show Spock - Lizard
@@ -105,6 +112,7 @@ class JakenponTest < Minitest::Test
       @out.string
   end
 
+  # Testing the show method (2 games)
   def test_dsl_4
     #-------------------------
     show Spock + Lizard + Rock
@@ -116,6 +124,7 @@ class JakenponTest < Minitest::Test
       @out.string
   end
 
+  # Testing the show method (2 games)
   def test_dsl_5
     #---------------------------
     show Spock + (Lizard + Rock)
@@ -127,6 +136,7 @@ class JakenponTest < Minitest::Test
       @out.string
   end
 
+  # Testing the show method (4 games)
   def test_dsl_6
     #--------------------------------------------
     show Rock + Paper + Scissors + Lizard + Spock
@@ -140,6 +150,7 @@ class JakenponTest < Minitest::Test
       @out.string
   end
 
+  # Testing the show method (4 games)
   def test_dsl_7
     #--------------------------------------------
     show Rock - Paper - Scissors - Lizard - Spock
@@ -153,6 +164,7 @@ class JakenponTest < Minitest::Test
       @out.string
   end
 
+  # Testing the show method (4 games)
   def test_dsl_8
     #-------------------------------------------------
     show((Rock + Paper) - (Scissors + Lizard) + Spock)
@@ -166,6 +178,7 @@ class JakenponTest < Minitest::Test
       @out.string
   end
 
+  # Testing the show method (4 games)
   def test_dsl_9
     #---------------------------------------------
     show Paper + ((Spock + Paper) - Lizard + Rock)
