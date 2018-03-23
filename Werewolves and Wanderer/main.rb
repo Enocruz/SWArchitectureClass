@@ -1,5 +1,5 @@
 # WEREWOLVES AND WARDERER
-# Date: 15-Mar-2018
+# Date: 23-Mar-2018
 # Authors:
 #          A01374527 Luis Daniel Rivero Sosa
 #          A01374648 Mario Lagunes Nava
@@ -26,6 +26,7 @@ require './map'
 class Game
     
     attr_accessor :name
+    # Initializes the initial values for the game
     def initialize
         @wealth = 75
         @strength = 100
@@ -43,16 +44,20 @@ class Game
         @score = 0
     end
 
+    # Starts the game, calling the principal routine
     def start
         puts("WHAT IS YOUR NAME, EXPLORER")
         @name = gets.chomp.upcase
         main_routine
     end
     
+    # Get the current score
     def get_score
         @score = 3 * @tally + 5 * @strength + 2 * @wealth + @food + 30 * @mk
         @score
     end
+    
+    # Principal routine that handles all the events
     def main_routine
         loop do
             if(@map.currentRoom != @map.previousRoom)
@@ -208,6 +213,7 @@ class Game
         end
     end
     
+    # Set the ferocity monster according to the parameter given
     def getToFight(monsterNumber)
         if(monsterNumber == -1)
             ferocity = 5
@@ -225,6 +231,7 @@ class Game
         bePrepared(monsterNumber, ferocity)
     end
     
+    # Adjust the ferocity of the monster according to the player stats
     def bePrepared(monsterNumber, ferocity)
         if(@suit == 1)
             puts('YOUR ARMOR INCREASES YOUR CHANCE OF SUCCESS')
@@ -267,6 +274,7 @@ class Game
         end
     end
     
+    # Starts the fight with the given monster
     def battle(monsterNumber, ferocity)
         if(monsterNumber == -1) 
             fight('Ferocious Werewolf',ferocity)
@@ -283,6 +291,7 @@ class Game
         end
     end
     
+    # Simulates the fight
     def fight(name, ferocity)
         loop do
             rndNumberFight = rand()
@@ -384,13 +393,17 @@ class Game
         end
     end
     
+    # Action to get the input (letters)
     def get_movement
         gets.chomp.upcase
     end
+    
+    # Action to get the input (numbers)
     def get_action
         gets.to_i
     end
     
+    # Method to pick up a treasure in the map
     def pick_up_treasure(treasure)
         if treasure < 10
             puts("THERE IS NO TREASURE TO PICK UP")
@@ -402,6 +415,7 @@ class Game
         end
     end
     
+    # Action perform to eat food
     def eat_food
         return if @food < 1
         loop do
@@ -417,6 +431,7 @@ class Game
         
     end
     
+    # Action perform in the inventory to buy food
     def buy_food
         loop do
             puts("\nHOW MANY UNITS OF FOOD")
@@ -435,6 +450,7 @@ class Game
         end
     end
     
+    # Method that erases all your stats for cheating
     def cheater
         puts("YOU HAVE TRIED TO CHEAT ME!")
         @wealth = 0
@@ -447,6 +463,7 @@ class Game
         sleep(2)
     end
     
+    # Main routine for the inventory
     def inventory
         puts("\n**********************************")
         puts("\nPROVISIONS  & INVENTORY")
@@ -551,4 +568,3 @@ class Game
         end
     end
 end
-Game.new.start

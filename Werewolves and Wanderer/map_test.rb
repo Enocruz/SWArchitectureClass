@@ -1,3 +1,11 @@
+# WEREWOLVES AND WARDERER
+# Date: 23-Mar-2018
+# Authors:
+#          A01374527 Luis Daniel Rivero Sosa
+#          A01374648 Mario Lagunes Nava
+#          A01375640 Brandon Alain Cruz Ruiz
+# File: map_test.rb
+
 require 'minitest/autorun'
 require 'stringio'
 require './map'
@@ -124,7 +132,4 @@ THERE ARE DOORS TO THE EAST AND TO THE SOUTH....\n"\
       "\n",\
       @out.string
   end
-
- 
-
 end

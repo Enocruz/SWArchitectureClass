@@ -1,5 +1,5 @@
 # WEREWOLVES AND WARDERER
-# Date: 15-Mar-2018
+# Date: 23-Mar-2018
 # Authors:
 #          A01374527 Luis Daniel Rivero Sosa
 #          A01374648 Mario Lagunes Nava
