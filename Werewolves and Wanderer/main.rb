@@ -50,10 +50,8 @@ class Game
     end
     
     def get_score
-        puts("YOUR SCORE IS")
         @score = 3 * @tally + 5 * @strength + 2 * @wealth + @food + 30 * @mk
-        puts(@score)
-        exit
+        @score
     end
     def main_routine
         loop do
@@ -63,7 +61,8 @@ class Game
             end
             if(@map.isGameWon)
                 @map.getWonMessage(@name)
-                get_score
+                puts("YOUR SCORE IS #{get_score}")
+                exit
             end
             puts("\n**********************************")
             puts("")
@@ -72,7 +71,8 @@ class Game
             end
             if(@strength < 1)
                 puts("YOU HAVE DIED.........")
-                get_score
+                puts("YOUR SCORE IS #{get_score}")
+                exit
             end
             @tally += 1
             puts("#{name.upcase}, YOUR STRENGTH IS #{@strength}")
@@ -166,10 +166,11 @@ class Game
             getToFight(treasureAndMonster)
             return true
         elsif(move == "Q")
-            get_score
+            puts("YOUR SCORE IS #{get_score}")
+            exit
         elsif(move == "T")
             puts("\n********************************\n")
-            puts("* YOUR TALLY AT PRESENT IS #{3*@tally + 5*@strength + 2*@wealth + @food + 30*@monsters_killed} *")
+            puts("* YOUR TALLY AT PRESENT IS #{get_score} *")
             puts("********************************\n")
             sleep(3)
             return true
@@ -550,7 +551,3 @@ class Game
         end
     end
 end
-
-game = Game.new
-game.start
-

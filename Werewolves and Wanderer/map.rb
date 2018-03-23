@@ -10,6 +10,8 @@ class Map
     
     attr_reader :map, :previousRoom
     attr_accessor :currentRoom
+    
+    # Initializer
     def initialize()
         @map = createOriginalMap()
         addTreasuresAndMonsters()
@@ -17,23 +19,28 @@ class Map
         @previousRoom = 0
     end
     
+    # Returns true if the user has completed the map false otherwise
     def isGameWon()
         return true if @currentRoom == 11
         false
     end
     
+    # Display the message when the game has been completed
     def getWonMessage(name)
         return "YOU'VE DONE IT!! THAT WAS THE EXIT FROM THE CASTLE. YOU HAVE SUCCEEDED, #{name}! YOU MANAGED TO GET OUT OF THE CASTLE. WELL DONE!"
     end
 
+    # Get the current object or monster in the current room
     def getTreasuresAndMonsters()
         return @map[@currentRoom-1][6]
     end
     
+    # Deletes the object of monter in the current room
     def setEmptyRoom
         @map[@currentRoom-1][6] = 0
     end
     
+    # Returns true if the player can move in the given direction in the curren room
     def isPossibleMove(move)
         possibleMoves = ["N","S","E","W","U","D"]
         index = possibleMoves.index(move)
@@ -43,6 +50,7 @@ class Map
         true
     end
     
+    # Displays a message error if the user can't move in the direction given
     def getMoveError(move)
         possibleMoves = ["N","S","E","W","U","D"]
         index = possibleMoves.index(move)
@@ -56,10 +64,12 @@ class Map
         return errors[index]
     end
     
+    # Auxiliar method to prevent strength to be consumed when there is no movement
     def updatePreviousRoom
         @previousRoom = @currentRoom    
     end
     
+    # Method that teleports the user when it uses a magic amulet
     def teleport
         @previousRoom = @currentRoom
         loop do
@@ -71,6 +81,7 @@ class Map
         end
     end
     
+    # Perform the action to move in the given direction
     def move(direction)
         @previousRoom = @currentRoom
         possibleMoves = ["N","S","E","W","U","D"]
@@ -82,11 +93,12 @@ class Map
         true
     end
     
-    
+    # Returns the map to string
     def toString
        (1..19).each{|index| puts "room #{index} = #{@map[index-1]}"} 
     end
     
+    # Add the treasures and the monsters to the map
     def addTreasuresAndMonsters()
         #create list with 4 random values each
         listTreasures = []
@@ -115,7 +127,7 @@ class Map
         
     end
     
-    
+    # Creates the original map of the game
     def createOriginalMap()
         [[0,2,0,0,0,0,0],[1,3,3,0,0,0,0],[2,0,5,2,0,0,0],[0,5,0,0,0,0,0],
             [4,0,0,3,15,13,0],[0,0,1,0,0,0,0],[0,8,0,0,0,0,0],[7,10,0,0,0,0,0],
@@ -123,6 +135,8 @@ class Map
                     [0,0,12,0,5,0,0],[0,15,17,0,0,0,0],[14,0,0,0,0,5,0],[17,0,19,0,0,0,0],
                         [18,16,0,14,0,0,0],[0,17,0,0,0,0,0],[9,0,16,0,0,0,0]]
     end
+    
+    # Get the description for each room according to the current room
     def getRoomDescription()
         dictionaryRoomDescriptions = 
         {
