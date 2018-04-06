@@ -33,3 +33,11 @@ All the exercises or examples seen in class in the following folder
 ```
 Activity
 ```
+
+## Sinatra
+
+To run the files inside the sinatra folder run the following command
+```
+ruby [filename].rb -p $PORT -o $IP
+```
+
