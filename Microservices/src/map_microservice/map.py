@@ -33,10 +33,12 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+# Gets the connection to the DB
 def connection():
   conn = sqlite3.connect('map.db')
   return conn
 
+# Method used to create a custom response
 def create_response(status, message):
   message = {
           'status': status,
@@ -46,12 +48,17 @@ def create_response(status, message):
   resp.status_code = 404
   return resp
 
+# Not found route
 @app.errorhandler(404)
 def not_found(error=None):
   return create_response(404, 'Not Found: ' + request.url)
     
 # Example call:
 # curl localhost:8083/map -X PUT -d '{"room_id": 1, "field":"treasure", "value": 17}' -H "Content-type: application/json"
+# GET Method
+# Creates a static map
+# PUT Method
+# Updates the two fields monster or treasure
 @app.route('/map', methods=['GET', 'PUT'])
 def game_map():
   conn = connection()
@@ -105,6 +112,7 @@ def game_map():
       return create_response(500, 'There was an error in the DB')
     return create_response(400, 'The room {0} does not exist'.format(id))
   
+# Gets the information for the given room id
 @app.route('/map/<int:id>', methods=['GET'])
 def get_rom(id):
   conn = connection()
@@ -125,5 +133,6 @@ def get_rom(id):
     }, indent=4, separators=(',', ': ')), 200
   return create_response(400, 'The room {0} does not exist'.format(id))
   
-
-app.run(host = "0.0.0.0", port = 8083)
+# Executes the microservice
+if __name__ == '__main__':
+  app.run(host = "0.0.0.0", port = 8083)

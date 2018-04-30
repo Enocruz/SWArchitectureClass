@@ -20,10 +20,12 @@ configure do
     set :bind, '0.0.0.0'
     set :port, PORT
 end
+
 # Creation of the variables
 before do
     content_type :json
 end
+
 # Error 404
 not_found do
     {'error' => "Resource not found #{request.path_info}"}.to_json
@@ -61,7 +63,7 @@ post '/monster' do
   end
 end
 
-# Get all the monsters
+# Get the monsters for the given id
 get '/monster/:id' do
   id_monster = params['id']
   if(monster_exist?(id_monster))

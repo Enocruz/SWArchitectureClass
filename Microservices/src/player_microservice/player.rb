@@ -20,15 +20,18 @@ configure do
     set :bind, '0.0.0.0'
     set :port, PORT
 end
+
 # Creation of the variables
 before do
     content_type :json
     ITEMS = [:sword, :axe, :suit, :light, :amulet, :wealth, :strength, :tally, :monsters_killed, :room, :food, :score, :prev_room]
 end
+
 # Error 404
 not_found do
     {'error' => "Resource not found #{request.path_info}"}.to_json
 end
+
 # Check if the JSON provided has the correct syntax 
 def parse_create_player(str)
   begin
@@ -40,11 +43,13 @@ def parse_create_player(str)
   nil
 end
 
+# Check if the player id exists in the DB
 def player_exist?(id_player)
   return true if PLAYER_INFO.where(id: id_player).count != 0
   false
 end
 
+# Creates a new player
 post '/player' do
   data = parse_create_player(request.body.read)
   if data
@@ -70,6 +75,7 @@ post '/player' do
   end
 end
 
+# Get all the players
 get '/players' do
   JSON.pretty_generate(
     PLAYER_INFO.order(Sequel.desc(:score), :time_playing).map do |player|
@@ -82,6 +88,7 @@ get '/players' do
   )
 end
 
+# Method used to get specific information abouth the items of the player
 get '/player/:id/:element' do
   id_player = params['id']
   element = params['element'].to_sym
@@ -103,6 +110,7 @@ get '/player/:id/:element' do
   end
 end
 
+# Updates the item information
 put '/player' do
   data = JSON.parse(request.body.read)
   id_player = data['id']
@@ -120,6 +128,7 @@ put '/player' do
   end
 end
 
+# Calculates and updates the score
 put '/score' do
   data = JSON.parse(request.body.read)
   id_player = data['id']
