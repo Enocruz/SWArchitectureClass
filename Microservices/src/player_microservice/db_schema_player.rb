@@ -29,5 +29,6 @@ DB.create_table :player do
   Integer       :score
   Integer       :room
   Integer       :prev_room
-  Integer       :time_playing
+  Integer       :game_completed
+  Float         :time_playing
 end

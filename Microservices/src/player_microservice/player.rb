@@ -24,7 +24,7 @@ end
 # Creation of the variables
 before do
     content_type :json
-    ITEMS = [:sword, :axe, :suit, :light, :amulet, :wealth, :strength, :tally, :monsters_killed, :room, :food, :score, :prev_room]
+    ITEMS = [:sword, :axe, :suit, :light, :amulet, :wealth, :strength, :tally, :monsters_killed, :room, :food, :score, :prev_room, :time_playing, :game_completed]
 end
 
 # Error 404
@@ -67,18 +67,19 @@ post '/player' do
       sword: 0,
       score: 0,
       room: 6,
-      time_playing: 0
+      game_completed: 0,
+      time_playing: 0.0
       )
-    [200,{:player_id => "#{id}"}.to_json]
+    [200, {:player_id => "#{id}"}.to_json]
   else
     [400, {'error' => 'Invalid input.'}.to_json]
   end
 end
 
-# Get all the players
+# Get all the players that have finished the game
 get '/players' do
   JSON.pretty_generate(
-    PLAYER_INFO.order(Sequel.desc(:score), :time_playing).map do |player|
+    PLAYER_INFO.where(game_completed: 1).order(Sequel.desc(:score), :time_playing).limit(5).map do |player|
       {
         'name' => player[:name],
         'score' => player[:score],
@@ -135,6 +136,17 @@ put '/score' do
   if player_exist?(id_player)
     PLAYER_INFO.where(id: id_player).update(:score => 3 * Sequel[:tally] + 5 * Sequel[:strength] + 2 * Sequel[:wealth] + Sequel[:food] + 30 * Sequel[:monsters_killed])
     [200, {message: "The score was calculated"}.to_json]
+  else
+    [403, {message: "The player with the id: #{id_player} doesn't exist"}.to_json]
+  end
+end
+
+put '/cheater' do
+  data = JSON.parse(request.body.read)
+  id_player = data['id']
+  if player_exist?(id_player)
+    PLAYER_INFO.where(id: id_player).update(:wealth => 0, :suit => 0, :axe => 0, :light => 0, :amulet => 0, :sword => 0, :food => Sequel[:food]/4)
+    [200, {message: "The cheater has been punished"}.to_json]
   else
     [403, {message: "The player with the id: #{id_player} doesn't exist"}.to_json]
   end

@@ -15,6 +15,7 @@ DB.drop_table? :monsters
 
 DB.create_table :monsters do
   primary_key   :id
+  Integer       :identifier
   String        :name
   Integer       :ferocity
   Integer       :room

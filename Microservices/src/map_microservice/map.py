@@ -45,7 +45,7 @@ def create_response(status, message):
           'message': message,
   }
   resp = jsonify(message)
-  resp.status_code = 404
+  resp.status_code = status
   return resp
 
 # Not found route
@@ -59,19 +59,19 @@ def not_found(error=None):
 # Creates a static map
 # PUT Method
 # Updates the two fields monster or treasure
-@app.route('/map', methods=['GET', 'PUT'])
+@app.route('/map', methods=['GET', 'PUT', 'DELETE'])
 def game_map():
   conn = connection()
   c = conn.cursor()
   if request.method == 'GET':
     c.execute('''SELECT * FROM map''')
     rooms = c.fetchall()
-    if rooms == 0:
+    if len(rooms) == 0:
       # Id , name, description, left room #, right room #, upside room #, downside room #, monster id #, treasure value
       rooms = [ (1, 'Hall', 'You are in the hall, there is a huge red carpet in the room', 0, 5, 2, 9, 0, 0),
                 (2, '', '', 0, 3, 0, 1, 0, 0),
                 (3, '', '', 2, 4, 0, 5, 0, 0),
-                (4, '', '', 3, 0, 6, 0, 0, 0),
+                (4, 'No se', 'Haciendo pruebas canonas jaja', 3, 0, 6, 0, 0, 0),
                 (5, '', '', 1, 0, 3, 0, 0, 0),
                 (6, 'Entry', 'You are in the entry room, you are facing east', 0, 0, 0, 4, 0, 0),
                 (7, '', '', 0, 0, 0, 11, 0, 0),
@@ -97,24 +97,28 @@ def game_map():
     value = data['value']
     if field != 'monster' and field != 'treasure':
       return create_response(400, 'Invalid field')
-    print(field)
-    conn = connection()
-    c = conn.cursor()
     c.execute('''SELECT * FROM map WHERE id = ? ''', (id, ))
     room = c.fetchone()
     if(room):
       c.execute('''UPDATE map SET {0} = ? where id = ?'''.format(field), (value, id, ))
-      count = c.rowcount;
+      count = c.rowcount
       conn.commit()
       conn.close()
       if(count == 1):
         return create_response(200, 'The field {0} for the room with id {1} was updated'.format(field, id))
       return create_response(500, 'There was an error in the DB')
     return create_response(400, 'The room {0} does not exist'.format(id))
+  elif request.method == 'DELETE':
+    c.execute('''DELETE FROM map''')
+    conn.commit()
+    conn.close()
+    return create_response(200, 'Map eliminated')
+    
+    
   
 # Gets the information for the given room id
 @app.route('/map/<int:id>', methods=['GET'])
-def get_rom(id):
+def get_room(id):
   conn = connection()
   c = conn.cursor()
   c.execute('''SELECT * FROM map WHERE id = ? ''', (id, ))
@@ -132,6 +136,29 @@ def get_rom(id):
       'treasure_value': room[8]
     }, indent=4, separators=(',', ': ')), 200
   return create_response(400, 'The room {0} does not exist'.format(id))
+
+@app.route('/rooms', methods=['GET'])
+def get_rooms():
+  conn = connection()
+  c = conn.cursor()
+  response = {}
+  rooms = []
+  for room in c.execute('''SELECT * FROM map'''):
+    rooms.append(
+      {
+      'room_number': room[0],
+      'room_name': room[1],
+      'room_desc': room[2],
+      'left_room_id': room[3],
+      'right_room_id': room[4],
+      'upside_room_id': room[5],
+      'downside_room_id': room[6],
+      'monster_id': room[7],
+      'treasure_value': room[8]
+      }
+    )
+  response['rooms'] = rooms
+  return json.dumps(response, indent = 4), 200
   
 # Executes the microservice
 if __name__ == '__main__':

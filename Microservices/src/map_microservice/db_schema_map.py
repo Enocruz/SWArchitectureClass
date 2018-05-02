@@ -4,7 +4,7 @@ import sqlite3
 def create_connection(db_file):
   conn = sqlite3.connect('map.db')
   c = conn.cursor()
-  c.execure('''DROP TABLE IF EXISTS map''')
+  c.execute('''DROP TABLE IF EXISTS map''')
   # Create table
   c.execute('''CREATE TABLE map
                (id INTEGER PRIMARY KEY, 

@@ -95,12 +95,19 @@ delete '/monster/:id' do
   end
 end
 
+delete '/monsters' do
+  MONSTERS.truncate
+  [200, {message: "All monsters were deleted"}.to_json]
+end
+
 # Updates the ferocity
 put '/monster/:id' do
   id_monster = params['id']
-  ferocity = params['ferocity']
+  data = JSON.parse(request.body.read)
+  ferocity = data['ferocity']
   if(monster_exist?(id_monster))
     MONSTERS.where(id: id_monster).update(:ferocity => ferocity)
+    [200, {message: "Ferocity updated"}.to_json]
   else
     [403, {message: "The monster with the id: #{id_monster} doesn't exist"}.to_json]
   end
