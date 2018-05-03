@@ -1,0 +1,592 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Game</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Game
+</h1>
+<ol class='paths'>
+<li>
+<a href="../files/src/game_rb.html">src/game.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong><a href="Object.html">Object</a></strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>Class that models the principal logic in the game</p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-new">new</a></li>
+</ol>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-bePrepared">bePrepared</a></li>
+<li><a href="#method-i-buy_food">buy_food</a></li>
+<li><a href="#method-i-cheater">cheater</a></li>
+<li><a href="#method-i-create_player">create_player</a></li>
+<li><a href="#method-i-delete_monster">delete_monster</a></li>
+<li><a href="#method-i-eat_food">eat_food</a></li>
+<li><a href="#method-i-fight">fight</a></li>
+<li><a href="#method-i-get_high_scores">get_high_scores</a></li>
+<li><a href="#method-i-get_info_player">get_info_player</a></li>
+<li><a href="#method-i-get_monster">get_monster</a></li>
+<li><a href="#method-i-get_room">get_room</a></li>
+<li><a href="#method-i-get_score">get_score</a></li>
+<li><a href="#method-i-get_time_playing">get_time_playing</a></li>
+<li><a href="#method-i-inventory">inventory</a></li>
+<li><a href="#method-i-main_routine">main_routine</a></li>
+<li><a href="#method-i-menu">menu</a></li>
+<li><a href="#method-i-move">move</a></li>
+<li><a href="#method-i-process_movement">process_movement</a></li>
+<li><a href="#method-i-repart_monster">repart_monster</a></li>
+<li><a href="#method-i-repart_treasure">repart_treasure</a></li>
+<li><a href="#method-i-start">start</a></li>
+<li><a href="#method-i-teleport">teleport</a></li>
+<li><a href="#method-i-update_info_map">update_info_map</a></li>
+<li><a href="#method-i-update_info_monster">update_info_monster</a></li>
+<li><a href="#method-i-update_info_player">update_info_player</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='method public-class' id='method-method-c-new'>
+<a name='method-c-new'></a>
+<div class='synopsis'>
+<span class='name'>new</span>
+<span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Initializes the map and deletes the monsters generated in the previous game</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-new-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-new-source'><span class="ruby-comment"># File src/game.rb, line 51</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>&#x000A;  <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_MAP}/map&quot;</span>)&#x000A;  <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">get</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_MAP}/map&quot;</span>)&#x000A;  <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_MONSTER}/monsters&quot;</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Public Instance methods</h2>
+<div class='method public-instance' id='method-method-i-bePrepared'>
+<a name='method-i-bePrepared'></a>
+<div class='synopsis'>
+<span class='name'>bePrepared</span>
+<span class='arguments'>(monster_id)</span>
+
+</div>
+<div class='description'>
+
+<p>Adjust the ferocity of the monster according to the player stats</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-bePrepared-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-bePrepared-source'><span class="ruby-comment"># File src/game.rb, line 360</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">bePrepared</span>(<span class="ruby-identifier">monster_id</span>)&#x000A;  <span class="ruby-identifier">monster</span> = <span class="ruby-identifier">get_monster</span>(<span class="ruby-identifier">monster_id</span>)&#x000A;  <span class="ruby-identifier">ferocity</span> = <span class="ruby-identifier">monster</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;ferocity&#39;</span>]&#x000A;  <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@suit</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;YOUR ARMOR INCREASES YOUR CHANCE OF SUCCESS&#39;</span>)&#x000A;    <span class="ruby-identifier">ferocity</span> = <span class="ruby-value">3</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">ferocity</span><span class="ruby-operator">/</span><span class="ruby-value">4</span>)&#x000A;    <span class="ruby-identifier">update_info_monster</span>(<span class="ruby-identifier">monster_id</span>, <span class="ruby-identifier">ferocity</span>)&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-identifier">i</span>=<span class="ruby-value">0</span>;&#x000A;  <span class="ruby-keyword">while</span>(<span class="ruby-identifier">i</span><span class="ruby-operator">&lt;=</span><span class="ruby-value">6</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*&#39;</span>)&#x000A;    <span class="ruby-identifier">i</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@axe</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@sword</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;YOU HAVE NO WEAPONS&#39;</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;YOU MUST FIGHT WITH BARE HANDS&#39;</span>)&#x000A;    <span class="ruby-identifier">ferocity</span> = <span class="ruby-identifier">ferocity</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">ferocity</span><span class="ruby-operator">/</span><span class="ruby-value">5</span>)&#x000A;    <span class="ruby-identifier">update_info_monster</span>(<span class="ruby-identifier">monster_id</span>, <span class="ruby-identifier">ferocity</span>)&#x000A;    <span class="ruby-identifier">fight</span>(<span class="ruby-identifier">monster_id</span>)&#x000A;  <span class="ruby-keyword">elsif</span> (<span class="ruby-ivar">@axe</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@sword</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;YOU HAVE ONLY AN AXE TO FIGHT WITH&#39;</span>)&#x000A;    <span class="ruby-identifier">ferocity</span> = <span class="ruby-value">4</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">ferocity</span><span class="ruby-operator">/</span><span class="ruby-value">5</span>)&#x000A;    <span class="ruby-identifier">update_info_monster</span>(<span class="ruby-identifier">monster_id</span>, <span class="ruby-identifier">ferocity</span>)&#x000A;    <span class="ruby-identifier">fight</span>(<span class="ruby-identifier">monster_id</span>)&#x000A;  <span class="ruby-keyword">elsif</span> (<span class="ruby-ivar">@axe</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@sword</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;YOU MUST FIGHT WITH YOUR SWORD&#39;</span>)&#x000A;    <span class="ruby-identifier">ferocity</span> = <span class="ruby-value">3</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">ferocity</span><span class="ruby-operator">/</span><span class="ruby-value">4</span>)&#x000A;    <span class="ruby-identifier">update_info_monster</span>(<span class="ruby-identifier">monster_id</span>, <span class="ruby-identifier">ferocity</span>)&#x000A;    <span class="ruby-identifier">fight</span>(<span class="ruby-identifier">monster_id</span>)&#x000A;  <span class="ruby-keyword">elsif</span> (<span class="ruby-ivar">@axe</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@sword</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;    <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;WHICH WEAPON?&quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;1 - AXE&quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;2 - SWORD&quot;</span>)&#x000A;      <span class="ruby-identifier">weapon</span> = <span class="ruby-identifier">get_action</span>&#x000A;      <span class="ruby-keyword">if</span> (<span class="ruby-identifier">weapon</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;        <span class="ruby-identifier">ferocity</span> = <span class="ruby-value">4</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">ferocity</span><span class="ruby-operator">/</span><span class="ruby-value">5</span>)&#x000A;        <span class="ruby-identifier">update_info_monster</span>(<span class="ruby-identifier">monster_id</span>, <span class="ruby-identifier">ferocity</span>)&#x000A;        <span class="ruby-identifier">fight</span>(<span class="ruby-identifier">monster_id</span>)&#x000A;      <span class="ruby-keyword">break</span>                    &#x000A;      <span class="ruby-keyword">elsif</span> (<span class="ruby-identifier">weapon</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span>)&#x000A;        <span class="ruby-identifier">ferocity</span> = <span class="ruby-value">3</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">ferocity</span><span class="ruby-operator">/</span><span class="ruby-value">4</span>)&#x000A;        <span class="ruby-identifier">update_info_monster</span>(<span class="ruby-identifier">monster_id</span>, <span class="ruby-identifier">ferocity</span>)&#x000A;        <span class="ruby-identifier">fight</span>(<span class="ruby-identifier">monster_id</span>)&#x000A;        <span class="ruby-keyword">break</span>&#x000A;      <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-buy_food'>
+<a name='method-i-buy_food'></a>
+<div class='synopsis'>
+<span class='name'>buy_food</span>
+<span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Action performed in the inventory to buy food</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-buy_food-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-buy_food-source'><span class="ruby-comment"># File src/game.rb, line 668</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">buy_food</span>&#x000A;  <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\nHOW MANY UNITS OF FOOD&quot;</span>)&#x000A;    <span class="ruby-identifier">food</span> = <span class="ruby-identifier">get_action</span>&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-identifier">food</span> <span class="ruby-operator">*</span> <span class="ruby-value">2</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@wealth</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU HAVEN&#39;T GOT ENOUGH MONEY&quot;</span>)&#x000A;      <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;      <span class="ruby-keyword">next</span>&#x000A;    <span class="ruby-keyword">else</span>&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;\nYOU BOUGTH #{food} UNITS OF FOOD&quot;</span>)&#x000A;      <span class="ruby-ivar">@food</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">food</span>&#x000A;      <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;food&#39;</span>, <span class="ruby-ivar">@food</span>)&#x000A;      <span class="ruby-ivar">@wealth</span> <span class="ruby-operator">-=</span> (<span class="ruby-identifier">food</span> <span class="ruby-operator">*</span> <span class="ruby-value">2</span>)&#x000A;      <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;wealth&#39;</span>, <span class="ruby-ivar">@wealth</span>)&#x000A;      <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;      <span class="ruby-keyword">break</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-cheater'>
+<a name='method-i-cheater'></a>
+<div class='synopsis'>
+<span class='name'>cheater</span>
+<span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>HTTP put method triggered when there the user tried to cheat</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-cheater-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-cheater-source'><span class="ruby-comment"># File src/game.rb, line 156</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">cheater</span>&#x000A;  <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU HAVE TRIED TO CHEAT ME!&quot;</span>)&#x000A;  <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">put</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_PLAYER}/cheater&quot;</span>, {<span class="ruby-string">&#39;id&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@idPlayer</span>}.<span class="ruby-identifier">to_json</span>, <span class="ruby-string">&#39;application/json&#39;</span>)&#x000A;  <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-create_player'>
+<a name='method-i-create_player'></a>
+<div class='synopsis'>
+<span class='name'>create_player</span>
+<span class='arguments'>(name)</span>
+
+</div>
+<div class='description'>
+
+<p>HTTP post method to create a new player</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-create_player-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-create_player-source'><span class="ruby-comment"># File src/game.rb, line 105</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_player</span>(<span class="ruby-identifier">name</span>)&#x000A;  <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">post</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_PLAYER}/player&quot;</span>, {<span class="ruby-string">&#39;name&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span>}.<span class="ruby-identifier">to_json</span>, <span class="ruby-string">&#39;application/json&#39;</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-delete_monster'>
+<a name='method-i-delete_monster'></a>
+<div class='synopsis'>
+<span class='name'>delete_monster</span>
+<span class='arguments'>(monster_id)</span>
+
+</div>
+<div class='description'>
+
+<p>HTTP delete a monster by id</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-delete_monster-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-delete_monster-source'><span class="ruby-comment"># File src/game.rb, line 151</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_monster</span>(<span class="ruby-identifier">monster_id</span>)&#x000A;  <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_MONSTER}/monster/#{monster_id}&quot;</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-eat_food'>
+<a name='method-i-eat_food'></a>
+<div class='synopsis'>
+<span class='name'>eat_food</span>
+<span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Action perform to eat food</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-eat_food-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-eat_food-source'><span class="ruby-comment"># File src/game.rb, line 535</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">eat_food</span>&#x000A;  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@food</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1</span>&#x000A;  <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;YOU HAVE #{@food} UNITS OF FOOD&quot;</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;HOW MANY DO YOU WANT TO EAT&quot;</span>)&#x000A;    <span class="ruby-identifier">food</span> = <span class="ruby-identifier">get_action</span>&#x000A;    <span class="ruby-keyword">if</span> <span class="ruby-identifier">food</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-ivar">@food</span>&#x000A;      <span class="ruby-ivar">@food</span> <span class="ruby-operator">-=</span> <span class="ruby-identifier">food</span>&#x000A;      <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;food&#39;</span>, <span class="ruby-ivar">@food</span>)&#x000A;      <span class="ruby-ivar">@strength</span> <span class="ruby-operator">+=</span> (<span class="ruby-identifier">food</span> <span class="ruby-operator">*</span> <span class="ruby-value">5</span>)&#x000A;      <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;strength&#39;</span>, <span class="ruby-ivar">@strength</span>)&#x000A;    <span class="ruby-keyword">break</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-fight'>
+<a name='method-i-fight'></a>
+<div class='synopsis'>
+<span class='name'>fight</span>
+<span class='arguments'>(monster_id)</span>
+
+</div>
+<div class='description'>
+
+<p>Simulates the fight</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-fight-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-fight-source'><span class="ruby-comment"># File src/game.rb, line 411</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">fight</span>(<span class="ruby-identifier">monster_id</span>)&#x000A;  <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">monster</span> = <span class="ruby-identifier">get_monster</span>(<span class="ruby-identifier">monster_id</span>)&#x000A;    <span class="ruby-identifier">ferocity</span> = <span class="ruby-identifier">monster</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;ferocity&#39;</span>]&#x000A;    <span class="ruby-identifier">rndNumberFight</span> = <span class="ruby-identifier">rand</span>()&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-identifier">rndNumberFight</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0.5</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-identifier">monster</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;name&#39;</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39; ATTACKS&#39;</span>)&#x000A;    <span class="ruby-keyword">else</span>&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;YOU ATTACK&#39;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">sleep</span>(<span class="ruby-value">1</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-identifier">rndNumberFight</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0.6</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@light</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;YOUR TORCH WAS KNOCKED FROM YOU&#39;</span>)&#x000A;      <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;light&#39;</span>, <span class="ruby-value">0</span>)&#x000A;      <span class="ruby-identifier">sleep</span>(<span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-identifier">rndNumberFight</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0.6</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@axe</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;YOU DROP YOUR AXE IN THE HEAT OF BATTLE&#39;</span>)&#x000A;      <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;axe&#39;</span>, <span class="ruby-value">0</span>)&#x000A;      <span class="ruby-identifier">ferocity</span> = <span class="ruby-value">5</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">ferocity</span><span class="ruby-operator">/</span><span class="ruby-value">4</span>)&#x000A;      <span class="ruby-identifier">sleep</span>(<span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-identifier">rndNumberFight</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0.6</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@sword</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;YOUR SWORD IS KNOCKED FROM YOUR HAND!!!&#39;</span>)&#x000A;      <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;sword&#39;</span>, <span class="ruby-value">0</span>)&#x000A;      <span class="ruby-identifier">ferocity</span> = <span class="ruby-value">4</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">ferocity</span><span class="ruby-operator">/</span><span class="ruby-value">3</span>)&#x000A;      <span class="ruby-identifier">sleep</span>(<span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">sleep</span>(<span class="ruby-value">1</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;    <span class="ruby-identifier">rndNumberFight</span> = <span class="ruby-identifier">rand</span>()&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-identifier">rndNumberFight</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0.5</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;YOU MANAGE TO WOUND IT&#39;</span>)&#x000A;      <span class="ruby-identifier">sleep</span>(<span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;      <span class="ruby-identifier">ferocity</span> = <span class="ruby-value">5</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">ferocity</span><span class="ruby-operator">/</span><span class="ruby-value">6</span>)&#x000A;      <span class="ruby-keyword">if</span>(<span class="ruby-identifier">rndNumberFight</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0.95</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;Aaaaargh&#39;</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;RIP! TEAR! RIP&#39;</span>)&#x000A;        <span class="ruby-identifier">sleep</span>(<span class="ruby-value">1</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;      <span class="ruby-keyword">if</span>(<span class="ruby-identifier">rndNumberFight</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0.9</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;YOU WANT TO RUN BUT YOU STAND YOUR GROUND&#39;</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;*&amp;%%$#$% $%#!! @ #$$# #$@! #$ $#$&#39;</span>)&#x000A;        <span class="ruby-identifier">sleep</span>(<span class="ruby-value">1</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;      <span class="ruby-keyword">if</span>(<span class="ruby-identifier">rndNumberFight</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0.70</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;WILL THIS BE A BATTLE TO THE DEATH?&#39;</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;HIS EYES FLASH FEARFULLY&#39;</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;BLOOD DRIPS FROM HIS CLAWS&#39;</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;YOU SMELL THE SULPHUR ON HIS BREATH&#39;</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;HE STRIKES WILDLY, MADLY...........&#39;</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;YOU HAVE NEVER FOUGHT AN OPONENT LIKE THIS!!&#39;</span>)&#x000A;        <span class="ruby-identifier">sleep</span>(<span class="ruby-value">1</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">rndNumberFight</span> = <span class="ruby-identifier">rand</span>()&#x000A;    <span class="ruby-identifier">update_info_monster</span>(<span class="ruby-identifier">monster_id</span>, <span class="ruby-identifier">ferocity</span>)&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-identifier">rndNumberFight</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0.5</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;THE MONSTER WOUNDS YOU!&#39;</span>)&#x000A;      <span class="ruby-ivar">@strength</span> <span class="ruby-operator">-=</span> <span class="ruby-value">5</span>&#x000A;      <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;strength&#39;</span>, <span class="ruby-ivar">@strength</span>)&#x000A;      <span class="ruby-identifier">sleep</span>(<span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">rndNumberFight</span> = <span class="ruby-identifier">rand</span>()&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-identifier">rndNumberFight</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0.35</span>)&#x000A;      <span class="ruby-keyword">next</span>&#x000A;    <span class="ruby-keyword">else</span>&#x000A;      <span class="ruby-keyword">if</span>(<span class="ruby-identifier">rndNumberFight</span> <span class="ruby-operator">*</span> <span class="ruby-value">20</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ferocity</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;AND YOU MANAGED TO KILL THE &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">monster</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;name&#39;</span>])&#x000A;        <span class="ruby-ivar">@monsters_killed</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>&#x000A;        <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;monsters_killed&#39;</span>, <span class="ruby-ivar">@monsters_killed</span>)&#x000A;        <span class="ruby-identifier">sleep</span>(<span class="ruby-value">1</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;        <span class="ruby-identifier">update_info_map</span>(<span class="ruby-ivar">@currentRoom</span>, <span class="ruby-string">&#39;monster&#39;</span>, <span class="ruby-value">0</span>)&#x000A;        <span class="ruby-identifier">delete_monster</span>(<span class="ruby-identifier">monster_id</span>)&#x000A;        <span class="ruby-identifier">update_variables</span>&#x000A;        <span class="ruby-keyword">return</span>&#x000A;      <span class="ruby-keyword">else</span>&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;THE &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">monster</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;name&#39;</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39; DEFEATED YOU&#39;</span>)&#x000A;        <span class="ruby-ivar">@strength</span> = <span class="ruby-ivar">@strength</span><span class="ruby-operator">/</span><span class="ruby-value">2</span>&#x000A;        <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;strength&#39;</span>, <span class="ruby-ivar">@strength</span>)&#x000A;        <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;room&#39;</span>, <span class="ruby-value">6</span>)&#x000A;        <span class="ruby-identifier">sleep</span>(<span class="ruby-value">1</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;        <span class="ruby-identifier">update_info_map</span>(<span class="ruby-ivar">@currentRoom</span>, <span class="ruby-string">&#39;monster&#39;</span>, <span class="ruby-value">0</span>)&#x000A;        <span class="ruby-identifier">delete_monster</span>(<span class="ruby-identifier">monster_id</span>)&#x000A;        <span class="ruby-identifier">update_variables</span>&#x000A;        <span class="ruby-keyword">return</span>&#x000A;      <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@strength</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1</span>    &#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-get_high_scores'>
+<a name='method-i-get_high_scores'></a>
+<div class='synopsis'>
+<span class='name'>get_high_scores</span>
+<span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>HTTP get method to get elements with the highest scores (only the ones that
+complete the game)</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-get_high_scores-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-get_high_scores-source'><span class="ruby-comment"># File src/game.rb, line 138</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_high_scores</span>&#x000A;  <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">get</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_PLAYER}/players&quot;</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-get_info_player'>
+<a name='method-i-get_info_player'></a>
+<div class='synopsis'>
+<span class='name'>get_info_player</span>
+<span class='arguments'>(info)</span>
+
+</div>
+<div class='description'>
+
+<p>HTTP get method to get the information for the given element</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-get_info_player-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-get_info_player-source'><span class="ruby-comment"># File src/game.rb, line 117</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_info_player</span>(<span class="ruby-identifier">info</span>)&#x000A;  <span class="ruby-identifier">current_info</span> = <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">get</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_PLAYER}/player/#{@idPlayer}/#{info}&quot;</span>)&#x000A;  <span class="ruby-identifier">current_info</span>[<span class="ruby-value">0</span>][<span class="ruby-identifier">info</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-get_monster'>
+<a name='method-i-get_monster'></a>
+<div class='synopsis'>
+<span class='name'>get_monster</span>
+<span class='arguments'>(monster_id)</span>
+
+</div>
+<div class='description'>
+
+<p>HTTP get a monster by id</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-get_monster-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-get_monster-source'><span class="ruby-comment"># File src/game.rb, line 147</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_monster</span>(<span class="ruby-identifier">monster_id</span>)&#x000A;  <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">get</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_MONSTER}/monster/#{monster_id}&quot;</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-get_room'>
+<a name='method-i-get_room'></a>
+<div class='synopsis'>
+<span class='name'>get_room</span>
+<span class='arguments'>(id)</span>
+
+</div>
+<div class='description'>
+
+<p>HTTP get method to get useful information of the room for the given room id</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-get_room-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-get_room-source'><span class="ruby-comment"># File src/game.rb, line 133</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_room</span>(<span class="ruby-identifier">id</span>)&#x000A;  <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">get</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_MAP}/map/#{id}&quot;</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-get_score'>
+<a name='method-i-get_score'></a>
+<div class='synopsis'>
+<span class='name'>get_score</span>
+<span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>HTTP put method to update the player&#39;s score</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-get_score-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-get_score-source'><span class="ruby-comment"># File src/game.rb, line 110</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_score</span>&#x000A;  <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">put</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_PLAYER}/score&quot;</span>, {<span class="ruby-string">&#39;id&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@idPlayer</span>}.<span class="ruby-identifier">to_json</span>, <span class="ruby-string">&#39;application/json&#39;</span>)&#x000A;  <span class="ruby-identifier">score</span> = <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">get</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_PLAYER}/player/#{@idPlayer}/score&quot;</span>)&#x000A;  <span class="ruby-identifier">score</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;score&#39;</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-get_time_playing'>
+<a name='method-i-get_time_playing'></a>
+<div class='synopsis'>
+<span class='name'>get_time_playing</span>
+<span class='arguments'>(start, finish)</span>
+
+</div>
+<div class='description'>
+
+<p>Calculates the elapsed time from the beginning to the end of the game</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-get_time_playing-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-get_time_playing-source'><span class="ruby-comment"># File src/game.rb, line 200</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_time_playing</span>(<span class="ruby-identifier">start</span>, <span class="ruby-identifier">finish</span>)&#x000A;  (<span class="ruby-identifier">finish</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">start</span>) <span class="ruby-operator">/</span> <span class="ruby-value">60</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-inventory'>
+<a name='method-i-inventory'></a>
+<div class='synopsis'>
+<span class='name'>inventory</span>
+<span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Action performed to open the store</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-inventory-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-inventory-source'><span class="ruby-comment"># File src/game.rb, line 552</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">inventory</span>&#x000A;  <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\n**********************************&quot;</span>)&#x000A;  <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\nPROVISIONS  &amp; INVENTORY&quot;</span>)&#x000A;  <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-ivar">@wealth</span> = <span class="ruby-identifier">get_info_player</span>(<span class="ruby-string">&#39;wealth&#39;</span>)&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@wealth</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\nYOU HAVE NO MONEY&quot;</span>)&#x000A;      <span class="ruby-keyword">return</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;\nYOU HAVE #{@wealth}&quot;</span>)&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@wealth</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">0.1</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\nYOU CAN BUY &quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\t 1 - FLAMING TORCH ($15)&quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\t 2 - AXE ($10)&quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\t 3 - SWORD ($20)&quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\t 4 - FOOD ($2 PER UNIT)&quot;</span>)  &#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\t 5 - MAGIC AMULET ($30)&quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\t 6 - SUIT OF ARMOR ($50)&quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\t 0 - TO CONTINUE ADVENTURE&quot;</span>)&#x000A;      <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@light</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU HAVE A TORCH&quot;</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;      <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@axe</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU HAVE AN AXE&quot;</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;      <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@sword</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU HAVE A SWORD&quot;</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;      <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@suit</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU HAVE A SUIT&quot;</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;      <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@amulet</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU HAVE AN AMULET&quot;</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\nENTER NO. OF ITEM REQUIRED&quot;</span>)&#x000A;      <span class="ruby-identifier">item</span> = <span class="ruby-identifier">get_action</span>&#x000A;      <span class="ruby-keyword">if</span>(<span class="ruby-identifier">item</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)&#x000A;        <span class="ruby-keyword">break</span>&#x000A;      <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">item</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;        <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@light</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;          <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU ALREADY OWN A FLAMING TORCH&quot;</span>)&#x000A;          <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;          <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;-----------------------------------&quot;</span>)&#x000A;          <span class="ruby-keyword">next</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-ivar">@wealth</span> <span class="ruby-operator">-=</span> <span class="ruby-value">15</span>&#x000A;        <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;wealth&#39;</span>, <span class="ruby-ivar">@wealth</span>)&#x000A;        <span class="ruby-ivar">@light</span> = <span class="ruby-value">1</span>&#x000A;        <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;light&#39;</span>, <span class="ruby-ivar">@light</span>)&#x000A;      <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">item</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span>)&#x000A;        <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@axe</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;          <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU ALREADY OWN AN AXE&quot;</span>)&#x000A;          <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;          <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;-----------------------------------&quot;</span>)&#x000A;          <span class="ruby-keyword">next</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-ivar">@wealth</span> <span class="ruby-operator">-=</span> <span class="ruby-value">10</span>&#x000A;        <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;wealth&#39;</span>, <span class="ruby-ivar">@wealth</span>)&#x000A;        <span class="ruby-ivar">@axe</span> = <span class="ruby-value">1</span>&#x000A;        <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;axe&#39;</span>, <span class="ruby-ivar">@axe</span>)&#x000A;      <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">item</span> <span class="ruby-operator">==</span> <span class="ruby-value">3</span>)&#x000A;        <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@sword</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;          <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU ALREADY OWN A SWORD&quot;</span>)&#x000A;          <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;          <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;-----------------------------------&quot;</span>)&#x000A;          <span class="ruby-keyword">next</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-ivar">@wealth</span> <span class="ruby-operator">-=</span> <span class="ruby-value">20</span>&#x000A;        <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;wealth&#39;</span>, <span class="ruby-ivar">@wealth</span>)&#x000A;        <span class="ruby-ivar">@sword</span> = <span class="ruby-value">1</span>&#x000A;        <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;sword&#39;</span>, <span class="ruby-ivar">@sword</span>)&#x000A;      <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">item</span> <span class="ruby-operator">==</span> <span class="ruby-value">4</span>)&#x000A;        <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@wealth</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>)&#x000A;          <span class="ruby-identifier">buy_food</span>&#x000A;        <span class="ruby-keyword">else</span>&#x000A;          <span class="ruby-identifier">cheater</span>&#x000A;          <span class="ruby-keyword">break</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;      <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">item</span> <span class="ruby-operator">==</span> <span class="ruby-value">5</span>)&#x000A;        <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@amulet</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;          <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU ALREADY OWN AN AMULET&quot;</span>)&#x000A;          <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;          <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;-----------------------------------&quot;</span>)&#x000A;          <span class="ruby-keyword">next</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-ivar">@wealth</span> <span class="ruby-operator">-=</span> <span class="ruby-value">30</span>&#x000A;        <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;wealth&#39;</span>, <span class="ruby-ivar">@wealth</span>)&#x000A;        <span class="ruby-ivar">@amulet</span> = <span class="ruby-value">1</span>&#x000A;        <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;amulet&#39;</span>, <span class="ruby-ivar">@amulet</span>)&#x000A;      <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">item</span> <span class="ruby-operator">==</span> <span class="ruby-value">6</span>)&#x000A;        <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@suit</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;          <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU ALREADY OWN A SUIT&quot;</span>)&#x000A;          <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;          <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;-----------------------------------&quot;</span>)&#x000A;          <span class="ruby-keyword">next</span>&#x000A;        <span class="ruby-keyword">end</span>&#x000A;        <span class="ruby-ivar">@wealth</span> <span class="ruby-operator">-=</span> <span class="ruby-value">50</span>&#x000A;        <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;wealth&#39;</span>, <span class="ruby-ivar">@wealth</span>)&#x000A;        <span class="ruby-ivar">@suit</span> = <span class="ruby-value">1</span>&#x000A;        <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;suit&#39;</span>, <span class="ruby-ivar">@suit</span>)&#x000A;      <span class="ruby-keyword">else</span>&#x000A;        <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;        <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;INVALID OPTION&quot;</span>)&#x000A;      <span class="ruby-keyword">end</span>&#x000A;      <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@wealth</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span>)&#x000A;        <span class="ruby-identifier">cheater</span>&#x000A;        <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;        <span class="ruby-keyword">break</span>&#x000A;      <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;-----------------------------------&quot;</span>)&#x000A;    <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-main_routine'>
+<a name='method-i-main_routine'></a>
+<div class='synopsis'>
+<span class='name'>main_routine</span>
+<span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Principal routine that handles all the events</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-main_routine-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-main_routine-source'><span class="ruby-comment"># File src/game.rb, line 205</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">main_routine</span>&#x000A;  <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">update_variables</span>&#x000A;    <span class="ruby-identifier">currentRoomInfo</span> = <span class="ruby-identifier">get_room</span>(<span class="ruby-ivar">@currentRoom</span>)&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@currentRoom</span> <span class="ruby-operator">!=</span> <span class="ruby-ivar">@previousRoom</span>)&#x000A;      <span class="ruby-ivar">@strength</span> <span class="ruby-operator">-=</span> <span class="ruby-value">5</span>&#x000A;      <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;strength&#39;</span>, <span class="ruby-ivar">@strength</span>)&#x000A;      <span class="ruby-ivar">@tally</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>&#x000A;      <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;tally&#39;</span>, <span class="ruby-ivar">@tally</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@currentRoom</span> <span class="ruby-operator">==</span> <span class="ruby-value">16</span>)&#x000A;      <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;time_playing&#39;</span>, <span class="ruby-identifier">get_time_playing</span>(<span class="ruby-ivar">@startTime</span>, <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>))&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;CONGRATS!, YOU HAVE WON THE GAME&quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;YOUR SCORE IS #{get_score}&quot;</span>)&#x000A;      <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;game_completed&#39;</span>, <span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">exit</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;     <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\n**********************************&quot;</span>)&#x000A;     <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@strength</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU HAVE DIED.........&quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;YOUR SCORE IS #{get_score}&quot;</span>)&#x000A;      <span class="ruby-identifier">exit</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@strength</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">10</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;WARNING, YOUR STRENGTH IS RUNNING LOW&quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-ivar">@tally</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>&#x000A;    <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;tally&#39;</span>, <span class="ruby-ivar">@tally</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;#{@name.upcase}, YOUR STRENGTH IS #{@strength}&quot;</span>)&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@wealth</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;YOU HAVE #{@wealth} GOLD&quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@food</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;YOUR PROVISIONS SACK HOLDS #{@food} UNITS OF FOOD&quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@axe</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@sword</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@amulet</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>)&#x000A;      <span class="ruby-identifier">print</span>(<span class="ruby-string">&quot;YOU ARE CARRIYING &quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@axe</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">print</span>(<span class="ruby-string">&quot;AN AXE &quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@sword</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">print</span>(<span class="ruby-string">&quot;A SWORD &quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">if</span>((<span class="ruby-ivar">@axe</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@sword</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@amulet</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">print</span>(<span class="ruby-string">&quot;AND &quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@amulet</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;      <span class="ruby-identifier">print</span>(<span class="ruby-string">&quot;THE MAGIC AMULET&quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@light</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;IT IS TO DARK TO SEE ANYTHING&quot;</span>)&#x000A;    <span class="ruby-keyword">else</span>&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;&quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;Room: #{currentRoomInfo[&#39;room_name&#39;]}&quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-identifier">currentRoomInfo</span>[<span class="ruby-string">&#39;room_desc&#39;</span>])&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">treasure</span> = <span class="ruby-identifier">currentRoomInfo</span>[<span class="ruby-string">&#39;treasure_value&#39;</span>]&#x000A;    <span class="ruby-identifier">monster</span> = <span class="ruby-identifier">currentRoomInfo</span>[<span class="ruby-string">&#39;monster_id&#39;</span>]&#x000A;    <span class="ruby-keyword">if</span>(<span class="ruby-identifier">treasure</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">monster</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;THE ROOM IS EMPTY&quot;</span>)&#x000A;    <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">treasure</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;THERE IS A TREASURE HERE WORTH OF #{treasure}&quot;</span>)&#x000A;    <span class="ruby-keyword">else</span>&#x000A;      <span class="ruby-identifier">monster</span> = <span class="ruby-identifier">get_monster</span>(<span class="ruby-identifier">monster</span>)&#x000A;      <span class="ruby-identifier">ferocity</span> = <span class="ruby-identifier">monster</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;ferocity&#39;</span>]&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;DANGER...THERE IS A MONSTER HERE....&quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;IT IS A #{monster[0][&#39;name&#39;]}&quot;</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;THE DANGER LEVEL IS #{ferocity}&quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;WHAT DO YOU WANT TO DO&quot;</span>)&#x000A;      <span class="ruby-identifier">move</span> = <span class="ruby-identifier">get_movement</span>&#x000A;      <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">process_movement</span>(<span class="ruby-identifier">move</span>, <span class="ruby-identifier">treasure</span>, <span class="ruby-identifier">monster</span>, <span class="ruby-identifier">currentRoomInfo</span>)&#x000A;      <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\n**********************************\n&quot;</span>)&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-menu'>
+<a name='method-i-menu'></a>
+<div class='synopsis'>
+<span class='name'>menu</span>
+<span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Principal menu</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-menu-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-menu-source'><span class="ruby-comment"># File src/game.rb, line 58</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">menu</span>&#x000A;  <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;&quot;</span>&#x000A;    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;WELCOME TO THIS NEW ADVENTURE GAME&quot;</span>&#x000A;    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;WHAT DO YOU WANT TO DO&quot;</span>&#x000A;    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;1 - START THE GAME&quot;</span>&#x000A;    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;2 - SEE HIGH SCORES&quot;</span>&#x000A;    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;3 - EXIT&quot;</span>&#x000A;    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;&quot;</span>&#x000A;    <span class="ruby-identifier">action</span> = <span class="ruby-identifier">get_action</span>&#x000A;    <span class="ruby-keyword">case</span> <span class="ruby-identifier">action</span>&#x000A;    <span class="ruby-keyword">when</span> <span class="ruby-value">1</span>&#x000A;      <span class="ruby-identifier">start</span>&#x000A;    <span class="ruby-keyword">when</span> <span class="ruby-value">2</span>&#x000A;      <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;*******************************************&quot;</span>&#x000A;      <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;*               HIGH SCORES               *&quot;</span>&#x000A;      <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;*******************************************&quot;</span>&#x000A;      <span class="ruby-identifier">puts</span>&#x000A;      <span class="ruby-identifier">players</span> = <span class="ruby-identifier">get_high_scores</span>&#x000A;      <span class="ruby-identifier">players</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">player</span><span class="ruby-operator">|</span>&#x000A;        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Number # 1&quot;</span>&#x000A;        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Name: #{player[&#39;name&#39;]}&quot;</span>&#x000A;        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Score: #{player[&#39;score&#39;]}&quot;</span>&#x000A;        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Time playing (minutes): #{player[&#39;time playing&#39;]}&quot;</span>&#x000A;        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;&quot;</span>&#x000A;      <span class="ruby-keyword">end</span>&#x000A;      <span class="ruby-keyword">next</span>&#x000A;    <span class="ruby-keyword">else</span>&#x000A;      <span class="ruby-identifier">exit</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-move'>
+<a name='method-i-move'></a>
+<div class='synopsis'>
+<span class='name'>move</span>
+<span class='arguments'>(move, infoRoom)</span>
+
+</div>
+<div class='description'>
+
+<p>Method to move the current position of the player to the new room</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-move-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-move-source'><span class="ruby-comment"># File src/game.rb, line 515</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">move</span>(<span class="ruby-identifier">move</span>, <span class="ruby-identifier">infoRoom</span>)&#x000A;  <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;prev_room&#39;</span>, <span class="ruby-ivar">@previousRoom</span>)&#x000A;  <span class="ruby-keyword">case</span> <span class="ruby-identifier">move</span>&#x000A;  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;W&quot;</span>&#x000A;    <span class="ruby-identifier">newRoom</span> = <span class="ruby-identifier">infoRoom</span>[<span class="ruby-string">&#39;left_room_id&#39;</span>]&#x000A;  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;E&quot;</span>&#x000A;    <span class="ruby-identifier">newRoom</span> = <span class="ruby-identifier">infoRoom</span>[<span class="ruby-string">&#39;right_room_id&#39;</span>]&#x000A;  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;N&quot;</span>&#x000A;    <span class="ruby-identifier">newRoom</span> = <span class="ruby-identifier">infoRoom</span>[<span class="ruby-string">&#39;upside_room_id&#39;</span>]&#x000A;  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;S&quot;</span>&#x000A;    <span class="ruby-identifier">newRoom</span> = <span class="ruby-identifier">infoRoom</span>[<span class="ruby-string">&#39;downside_room_id&#39;</span>]&#x000A;  <span class="ruby-keyword">else</span>&#x000A;    <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">newRoom</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>&#x000A;  <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;room&#39;</span>, <span class="ruby-identifier">newRoom</span>)&#x000A;  <span class="ruby-keyword">true</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-process_movement'>
+<a name='method-i-process_movement'></a>
+<div class='synopsis'>
+<span class='name'>process_movement</span>
+<span class='arguments'>(move, treasure, monster, infoRoom)</span>
+
+</div>
+<div class='description'>
+
+<p>Process the movement according to the action given</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-process_movement-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-process_movement-source'><span class="ruby-comment"># File src/game.rb, line 287</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">process_movement</span>(<span class="ruby-identifier">move</span>, <span class="ruby-identifier">treasure</span>, <span class="ruby-identifier">monster</span>, <span class="ruby-identifier">infoRoom</span>)&#x000A;  <span class="ruby-identifier">flee</span> = <span class="ruby-identifier">rand</span>()&#x000A;  <span class="ruby-keyword">if</span>(<span class="ruby-identifier">monster</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">move</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;R&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">move</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;F&quot;</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;FIGHT OR RUN!&quot;</span>)&#x000A;    <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>&#x000A;  <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">monster</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">move</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;R&quot;</span> <span class="ruby-operator">&amp;&amp;</span>  <span class="ruby-identifier">flee</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0.7</span>)&#x000A;    <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>&#x000A;      <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;WHICH WAY DO YOU WANT TO FLEE?&#39;</span>)&#x000A;      <span class="ruby-identifier">move</span> = <span class="ruby-identifier">get_movement</span>&#x000A;      <span class="ruby-keyword">if</span> <span class="ruby-identifier">isPossibleMove</span>(<span class="ruby-identifier">move</span>, <span class="ruby-identifier">infoRoom</span>)&#x000A;        <span class="ruby-identifier">move</span>(<span class="ruby-identifier">move</span>, <span class="ruby-identifier">infoRoom</span>)&#x000A;        <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>&#x000A;      <span class="ruby-keyword">else</span>&#x000A;        <span class="ruby-identifier">p</span> <span class="ruby-identifier">errorMove</span>(<span class="ruby-identifier">move</span>)&#x000A;        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>&#x000A;      <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">monster</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">move</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;R&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">flee</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0.6</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&#39;NO YOU MUST STAND AND FIGHT&#39;</span>)&#x000A;    <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;    <span class="ruby-identifier">bePrepared</span>(<span class="ruby-identifier">infoRoom</span>[<span class="ruby-string">&#39;monster_id&#39;</span>])&#x000A;    <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>&#x000A;  <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">monster</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>  <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">move</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;F&quot;</span>)&#x000A;    <span class="ruby-identifier">bePrepared</span>(<span class="ruby-identifier">infoRoom</span>[<span class="ruby-string">&#39;monster_id&#39;</span>])&#x000A;    <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>&#x000A;  <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">move</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;Q&quot;</span>)&#x000A;    <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;time_playing&#39;</span>, <span class="ruby-identifier">get_time_playing</span>(<span class="ruby-ivar">@startTime</span>, <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>))&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;YOUR SCORE IS #{get_score}&quot;</span>)&#x000A;    <span class="ruby-identifier">exit</span>&#x000A;  <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">move</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;T&quot;</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;\n********************************\n&quot;</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;* YOUR TALLY AT PRESENT IS #{get_score} *&quot;</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;********************************\n&quot;</span>)&#x000A;    <span class="ruby-identifier">sleep</span>(<span class="ruby-value">3</span>)&#x000A;    <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>&#x000A;  <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">move</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;I&quot;</span>)&#x000A;    <span class="ruby-identifier">inventory</span>&#x000A;    <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;prev_room&#39;</span>, <span class="ruby-ivar">@currentRoom</span>)&#x000A;    <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;    <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>&#x000A;  <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">move</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;C&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@food</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;YOU HAVE NO FOOD&quot;</span>)&#x000A;  <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">move</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;C&quot;</span>)&#x000A;    <span class="ruby-identifier">eat_food</span>&#x000A;    <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;prev_room&#39;</span>, <span class="ruby-ivar">@currentRoom</span>)&#x000A;     <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;    <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>&#x000A;  <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">move</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;F&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">monster</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;THERE IS NOTHING TO FIGTH HERE&quot;</span>)&#x000A;  <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">move</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;P&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">treasure</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)&#x000A;    <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;THERE IS NOTHING TO PICK UP&quot;</span>)&#x000A;    <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;    <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>&#x000A;  <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">move</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;P&quot;</span>)&#x000A;    <span class="ruby-ivar">@wealth</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">infoRoom</span>[<span class="ruby-string">&#39;treasure_value&#39;</span>]&#x000A;    <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;wealth&#39;</span>, <span class="ruby-ivar">@wealth</span>)&#x000A;    <span class="ruby-identifier">update_info_map</span>(<span class="ruby-ivar">@currentRoom</span>, <span class="ruby-string">&#39;treasure&#39;</span>, <span class="ruby-value">0</span>)&#x000A;  <span class="ruby-keyword">elsif</span>(<span class="ruby-identifier">move</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;M&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@amulet</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)&#x000A;    <span class="ruby-identifier">teleport</span>&#x000A;    <span class="ruby-identifier">sleep</span>(<span class="ruby-value">2</span>)&#x000A;    <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>&#x000A;  <span class="ruby-keyword">else</span>&#x000A;    <span class="ruby-keyword">if</span> <span class="ruby-identifier">isPossibleMove</span>(<span class="ruby-identifier">move</span>, <span class="ruby-identifier">infoRoom</span>)&#x000A;      <span class="ruby-identifier">move</span>(<span class="ruby-identifier">move</span>, <span class="ruby-identifier">infoRoom</span>)&#x000A;      <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>&#x000A;    <span class="ruby-keyword">else</span>&#x000A;      <span class="ruby-identifier">p</span> <span class="ruby-identifier">errorMove</span>(<span class="ruby-identifier">move</span>)&#x000A;      <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-repart_monster'>
+<a name='method-i-repart_monster'></a>
+<div class='synopsis'>
+<span class='name'>repart_monster</span>
+<span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Creates and repart all the monsters in the map</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-repart_monster-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-repart_monster-source'><span class="ruby-comment"># File src/game.rb, line 178</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">repart_monster</span>&#x000A;  <span class="ruby-identifier">monsters</span> = [{<span class="ruby-string">&#39;name&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;Fanatical Fleshgorger&#39;</span>.<span class="ruby-identifier">upcase</span>, <span class="ruby-string">&#39;ferocity&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">10</span>}, &#x000A;              {<span class="ruby-string">&#39;name&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;Maloventy Maldemer&#39;</span>.<span class="ruby-identifier">upcase</span>, <span class="ruby-string">&#39;ferocity&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">15</span>}, &#x000A;              {<span class="ruby-string">&#39;name&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;Devastating Ice Dragon&#39;</span>.<span class="ruby-identifier">upcase</span>, <span class="ruby-string">&#39;ferocity&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">20</span>},&#x000A;              {<span class="ruby-string">&#39;name&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;Horremdous Hodgepodger&#39;</span>.<span class="ruby-identifier">upcase</span>, <span class="ruby-string">&#39;ferocity&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">25</span>}, &#x000A;              {<span class="ruby-string">&#39;name&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;Ghastly Gruesomeness&#39;</span>.<span class="ruby-identifier">upcase</span>, <span class="ruby-string">&#39;ferocity&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">30</span>}]&#x000A;  <span class="ruby-identifier">count</span> = <span class="ruby-value">0</span>&#x000A;  <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">random</span> = <span class="ruby-constant">Random</span>.<span class="ruby-identifier">rand</span>(<span class="ruby-value">16</span>)&#x000A;    <span class="ruby-identifier">room</span> = <span class="ruby-identifier">get_room</span>(<span class="ruby-identifier">random</span>)&#x000A;    <span class="ruby-keyword">if</span> <span class="ruby-identifier">random</span> <span class="ruby-operator">==</span> <span class="ruby-value">6</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">random</span> <span class="ruby-operator">==</span> <span class="ruby-value">16</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">room</span>[<span class="ruby-string">&#39;treasure_value&#39;</span>] <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>&#x000A;      <span class="ruby-keyword">next</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">dataMonster</span> = <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">post</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_MONSTER}/monster&quot;</span>, {<span class="ruby-string">&#39;name&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">monsters</span>[<span class="ruby-identifier">count</span>][<span class="ruby-string">&#39;name&#39;</span>], <span class="ruby-string">&#39;ferocity&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">monsters</span>[<span class="ruby-identifier">count</span>][<span class="ruby-string">&#39;ferocity&#39;</span>], <span class="ruby-string">&#39;room&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">random</span>}.<span class="ruby-identifier">to_json</span>, <span class="ruby-string">&#39;application/json&#39;</span>)&#x000A;    <span class="ruby-identifier">update_info_map</span>(<span class="ruby-identifier">random</span>, <span class="ruby-string">&#39;monster&#39;</span>, <span class="ruby-identifier">dataMonster</span>[<span class="ruby-string">&#39;monster_id&#39;</span>].<span class="ruby-identifier">to_i</span>)&#x000A;    <span class="ruby-identifier">count</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>&#x000A;    <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">5</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;  &#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-repart_treasure'>
+<a name='method-i-repart_treasure'></a>
+<div class='synopsis'>
+<span class='name'>repart_treasure</span>
+<span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Repart all the treasures in the map</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-repart_treasure-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-repart_treasure-source'><span class="ruby-comment"># File src/game.rb, line 163</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">repart_treasure</span>&#x000A;  <span class="ruby-identifier">count</span> = <span class="ruby-value">0</span>&#x000A;  <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">random</span> = <span class="ruby-constant">Random</span>.<span class="ruby-identifier">rand</span>(<span class="ruby-value">16</span>)&#x000A;    <span class="ruby-keyword">if</span> <span class="ruby-identifier">random</span> <span class="ruby-operator">==</span> <span class="ruby-value">6</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">random</span> <span class="ruby-operator">==</span> <span class="ruby-value">16</span>&#x000A;      <span class="ruby-keyword">next</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">treasure_value</span> = <span class="ruby-constant">Random</span>.<span class="ruby-identifier">rand</span>(<span class="ruby-value">100</span>)&#x000A;    <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">put</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_MAP}/map&quot;</span>, {<span class="ruby-string">&#39;room_id&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">random</span>, <span class="ruby-string">&#39;field&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;treasure&#39;</span>, <span class="ruby-string">&#39;value&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">treasure_value</span>}.<span class="ruby-identifier">to_json</span>, <span class="ruby-string">&#39;application/json&#39;</span>)&#x000A;    <span class="ruby-identifier">count</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>&#x000A;    <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">4</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-start'>
+<a name='method-i-start'></a>
+<div class='synopsis'>
+<span class='name'>start</span>
+<span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Starts the game, calling the principal routine</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-start-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-start-source'><span class="ruby-comment"># File src/game.rb, line 92</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">start</span>&#x000A;  <span class="ruby-ivar">@startTime</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>&#x000A;  <span class="ruby-identifier">repart_treasure</span>&#x000A;  <span class="ruby-identifier">repart_monster</span>&#x000A;  <span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;WHAT IS YOUR NAME, EXPLORER&quot;</span>)&#x000A;  <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>.<span class="ruby-identifier">upcase</span>&#x000A;  <span class="ruby-identifier">data_name</span> = <span class="ruby-identifier">create_player</span>(<span class="ruby-ivar">@name</span>)&#x000A;  <span class="ruby-ivar">@idPlayer</span> = <span class="ruby-identifier">data_name</span>[<span class="ruby-string">&#39;player_id&#39;</span>].<span class="ruby-identifier">to_i</span>&#x000A;  <span class="ruby-identifier">update_variables</span>&#x000A;  <span class="ruby-identifier">main_routine</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-teleport'>
+<a name='method-i-teleport'></a>
+<div class='synopsis'>
+<span class='name'>teleport</span>
+<span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>If the user has an amulet then move his position to a random room</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-teleport-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-teleport-source'><span class="ruby-comment"># File src/game.rb, line 689</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">teleport</span>&#x000A;  <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>&#x000A;    <span class="ruby-identifier">random</span> = <span class="ruby-constant">Random</span>.<span class="ruby-identifier">rand</span>(<span class="ruby-value">16</span>)&#x000A;    <span class="ruby-keyword">if</span> <span class="ruby-identifier">random</span> <span class="ruby-operator">==</span> <span class="ruby-value">6</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">random</span> <span class="ruby-operator">==</span> <span class="ruby-value">16</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">random</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@currentRoom</span>&#x000A;      <span class="ruby-keyword">next</span>&#x000A;    <span class="ruby-keyword">end</span>&#x000A;    <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;prev_room&#39;</span>, <span class="ruby-ivar">@previousRoom</span>)&#x000A;    <span class="ruby-identifier">update_info_player</span>(<span class="ruby-string">&#39;room&#39;</span>, <span class="ruby-identifier">random</span>)&#x000A;    <span class="ruby-keyword">break</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-update_info_map'>
+<a name='method-i-update_info_map'></a>
+<div class='synopsis'>
+<span class='name'>update_info_map</span>
+<span class='arguments'>(roomId, field, value)</span>
+
+</div>
+<div class='description'>
+
+<p>HTTP put method to update the elements in the map for the given room id</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-update_info_map-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-update_info_map-source'><span class="ruby-comment"># File src/game.rb, line 128</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_info_map</span>(<span class="ruby-identifier">roomId</span>, <span class="ruby-identifier">field</span>, <span class="ruby-identifier">value</span>)&#x000A;  <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">put</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_MAP}/map&quot;</span>, {<span class="ruby-string">&#39;room_id&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">roomId</span>, <span class="ruby-string">&#39;field&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">field</span>, <span class="ruby-string">&#39;value&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">value</span>}.<span class="ruby-identifier">to_json</span>, <span class="ruby-string">&#39;application/json&#39;</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-update_info_monster'>
+<a name='method-i-update_info_monster'></a>
+<div class='synopsis'>
+<span class='name'>update_info_monster</span>
+<span class='arguments'>(monster_id, ferocity)</span>
+
+</div>
+<div class='description'>
+
+<p>HTTP put method to update the ferocity for the given monster id</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-update_info_monster-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-update_info_monster-source'><span class="ruby-comment"># File src/game.rb, line 143</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_info_monster</span>(<span class="ruby-identifier">monster_id</span>, <span class="ruby-identifier">ferocity</span>)&#x000A;  <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">put</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_MONSTER}/monster/#{monster_id}&quot;</span>, {<span class="ruby-string">&#39;ferocity&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ferocity</span>}.<span class="ruby-identifier">to_json</span>, <span class="ruby-string">&#39;application/json&#39;</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-update_info_player'>
+<a name='method-i-update_info_player'></a>
+<div class='synopsis'>
+<span class='name'>update_info_player</span>
+<span class='arguments'>(info, new_value)</span>
+
+</div>
+<div class='description'>
+
+<p>HTTP put method to update the value for the given element</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-update_info_player-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-update_info_player-source'><span class="ruby-comment"># File src/game.rb, line 123</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_info_player</span>(<span class="ruby-identifier">info</span>, <span class="ruby-identifier">new_value</span>)&#x000A;  <span class="ruby-constant">RESTful</span>.<span class="ruby-identifier">put</span>(<span class="ruby-node">&quot;#{URL_MICROSERVICE_PLAYER}/player&quot;</span>, {<span class="ruby-string">&#39;id&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@idPlayer</span>, <span class="ruby-string">&#39;element&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">info</span>, <span class="ruby-string">&#39;value&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">new_value</span>}.<span class="ruby-identifier">to_json</span>, <span class="ruby-string">&#39;application/json&#39;</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

@@ -1,12 +1,12 @@
 = Final Project Architecure and Design Software
 
-Authors: Luis Daniel Rivero Sosa A01374527
+Authors:: Luis Daniel Rivero Sosa A01374527
 		 Mario Lagunes Nava		 A01374648
 		 Brandon Alain Cruz Ruiz A01375640
 
-Date: 	 May 3, 2018
+Date:: 	 May 3, 2018
 
-In this final project we made an adventure game using microservices. We use ... beacuse we know that
+In this final project we made an adventure game using microservices. We use Sinatra beacuse we learn how to use it and because we like it. Also we use flask, because one of our partners was working on a project and he recomendend us, and the documentation was easy to understand. We decide to use Python because to us is a simple language and it has a common syntax with ruby. We do like doing this final project.
 
 The directory structure for the application and its documentation is as follows:
 
@@ -50,26 +50,43 @@ Afterwards, point your web browser the server’s root URL.
 
 === Logical View
 
+  Here we present the logical view:
 
+  rdoc-image:img/Logical.jpg
 
 === Process View
 
+  Here we present the process view:
+
+  rdoc-image:img/Process.jpg
 
 === Development View
 
+  Here we present the development view:
+
+  rdoc-image:img/Development.jpg
 
 === Physical View
+  
+  Here we present the Physical view:
 
+  rdoc-image:img/Physical.jpg
 
 === Scenarios
 
+  Here we present some scenarios:
+
+  rdoc-image:img/Scenarios.jpg
+
 == Patterns Used
 
-We use the following patterns:
+We use the following pattern:
 
-- <b>Domain-Specific Language</b>: The +server.rb+ file consists of a series of Sinatra _routes_. Sinatra is a DSL for creating web applications in Ruby.
-- <b>Composition </b>: 
+- <b>Domain-Specific Language</b>: The +monsters.rb+ and +player.rb+ files consists of a series of Sinatra _routes_. Sinatra is a DSL for creating web applications in Ruby.
 
+== Acknowledgments
+
+We have the assistan of Oscar Allan Ruiz Toledo at the moment we implement the flask part.
 
 == References
 
