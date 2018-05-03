@@ -6,13 +6,18 @@
 #          A01375640 Brandon Alain Cruz Ruiz
 # File: monsters.rb
 
+# The source code contained in this file define a microservice
+#that manage the monsters in the game .
 
 require 'sinatra'
 require 'json'
 require 'sequel'
 
+#Final variable that defines the port conection
 PORT = 8082
+#Final variable that instances the database connection
 DB = Sequel.connect('sqlite://monsters.db')
+#Final variable that host the monsters information
 MONSTERS = DB[:monsters]
 
 # Server configuration
@@ -95,6 +100,7 @@ delete '/monster/:id' do
   end
 end
 
+#Delete all the monsters
 delete '/monsters' do
   MONSTERS.truncate
   [200, {message: "All monsters were deleted"}.to_json]

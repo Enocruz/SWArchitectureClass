@@ -7,12 +7,18 @@
 # File: db_schema_monsters.rb
 # File required to create the database named monsters.db
 
+# The source code contained in this file define the monsters
+#microservice database and it connection
+
 require 'sequel'
 
+#Final variable that save the connection to database
 DB = Sequel.connect('sqlite://monsters.db')
 
+#Eliminate the table of monsters if it exist
 DB.drop_table? :monsters
 
+#Create the monster table
 DB.create_table :monsters do
   primary_key   :id
   Integer       :identifier

@@ -69,20 +69,20 @@ def game_map():
     if len(rooms) == 0:
       # Id , name, description, left room #, right room #, upside room #, downside room #, monster id #, treasure value
       rooms = [ (1, 'Hall', 'You are in the hall, there is a huge red carpet in the room', 0, 5, 2, 9, 0, 0),
-                (2, '', '', 0, 3, 0, 1, 0, 0),
-                (3, '', '', 2, 4, 0, 5, 0, 0),
-                (4, 'No se', 'Haciendo pruebas canonas jaja', 3, 0, 6, 0, 0, 0),
-                (5, '', '', 1, 0, 3, 0, 0, 0),
+                (2, 'Audience chamber', 'there is a window to the north', 0, 3, 0, 1, 0, 0),
+                (3, 'Kitchen', 'It has been many years since meals were prepared here', 2, 4, 0, 5, 0, 0),
+                (4, 'Store room', 'The air is thick with spice and curry fumes', 3, 0, 6, 0, 0, 0),
+                (5, 'Inner hallway', 'This room is completely empty', 1, 0, 3, 0, 0, 0),
                 (6, 'Entry', 'You are in the entry room, you are facing east', 0, 0, 0, 4, 0, 0),
-                (7, '', '', 0, 0, 0, 11, 0, 0),
-                (8, '', '', 0, 9, 9, 0, 0, 0),
-                (9, '', '', 8, 10, 1, 0, 0, 0),
-                (10, '', '', 9, 11, 0, 0, 0, 0),
-                (11, '', '', 10, 12, 7, 0, 0, 0),
-                (12, '', '', 11, 13, 0, 0, 0, 0),
-                (13, '', '', 12, 0, 14, 0, 0, 0),
-                (14, '', '', 0, 15, 0, 13, 0, 0),
-                (15, '', '', 14, 0, 16, 0, 0, 0),
+                (7, 'The great hall', 'there are two doors in this room.the wood panels are warped and faded', 0, 0, 0, 11, 0, 0),
+                (8, 'Monarchs private meeting room', 'You hear a strange noise behind you', 0, 9, 9, 0, 0, 0),
+                (9, 'Reading room', 'You can see a lot of medieval era and witchcraft books', 8, 10, 1, 0, 0, 0),
+                (10, 'Master bedroom ', 'A well decorated room', 9, 11, 0, 0, 0, 0),
+                (11, 'Empty room', 'there are no windows, just exits', 10, 12, 7, 0, 0, 0),
+                (12, 'Dark dungeon', 'There are two possible exits', 11, 13, 0, 0, 0, 0),
+                (13, 'Prison guardroom', 'There is one other exit, a small hole in the eastwall the air is damp and unpleasant', 12, 0, 14, 0, 0, 0),
+                (14, 'Guests room', 'Here are 4 bedrooms and old cloth in the closet', 0, 15, 0, 13, 0, 0),
+                (15, 'Rear vestibule ', 'vestibule there are windows to the East from which you can see the ornamental lake', 14, 0, 16, 0, 0, 0),
                 (16, 'Exit', 'Congrats!, you made it to the exit', 0, 0, 0, 0, 0, 0)
                 ]
       c.executemany('INSERT INTO map VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', rooms)

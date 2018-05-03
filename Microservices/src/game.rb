@@ -1,36 +1,41 @@
+# The source code contained in this file define a microservice
+#that manage the user interaction with the whole game.
 require 'net/http'
 require 'json'
- 
+#Final variable that save the localhost 8081
 URL_MICROSERVICE_PLAYER = 'http://localhost:8081'
+#Final variable that save the localhost 8082
 URL_MICROSERVICE_MONSTER = 'http://localhost:8082'
+#Final variable that save the localhost 8083
 URL_MICROSERVICE_MAP = 'http://localhost:8083'
 
 # From “Code example of using REST in Ruby on Rails” by LEEjava
 # https://leejava.wordpress.com/2009/04/10/code-example-to-use-rest-in-ruby-on-rails/
-#
+
+#Module that manage the rest
 module RESTful
-   
+  #Method that get an url
   def self.get(url)
     uri = URI.parse(url)
     http = Net::HTTP.start(uri.host, uri.port)
     resp = http.send_request('GET', uri.request_uri)
     JSON.parse(resp.body)
   end
- 
+ #Method that post a content with specific data
   def self.post(url, data, content_type)
     uri = URI.parse(url)
     http = Net::HTTP.start(uri.host, uri.port)
     resp = http.send_request('POST', uri.request_uri, data, 'Content-Type' => content_type)
     JSON.parse(resp.body)
   end
- 
+ #Method that put a content with specific data
   def self.put(url, data, content_type)
     uri = URI.parse(url)
     http = Net::HTTP.start(uri.host, uri.port)
     resp = http.send_request('PUT', uri.request_uri, data, 'Content-Type' => content_type)
     JSON.parse(resp.body)
   end
- 
+ #Method that delete by url
   def self.delete(url)
     uri = URI.parse(url)
     http = Net::HTTP.start(uri.host, uri.port)
@@ -39,6 +44,7 @@ module RESTful
   end
 end
 
+#Class that models the principal logic in the game
 class Game
   
   # Initializes the map and deletes the monsters generated in the previous game
@@ -137,11 +143,11 @@ class Game
   def update_info_monster(monster_id, ferocity)
     RESTful.put("#{URL_MICROSERVICE_MONSTER}/monster/#{monster_id}", {'ferocity' => ferocity}.to_json, 'application/json')
   end
-  
+  # HTTP get a monster by id
   def get_monster(monster_id)
     RESTful.get("#{URL_MICROSERVICE_MONSTER}/monster/#{monster_id}")
   end
-  
+  # HTTP delete a monster by id
   def delete_monster(monster_id)
     RESTful.delete("#{URL_MICROSERVICE_MONSTER}/monster/#{monster_id}")
   end
@@ -251,6 +257,7 @@ class Game
         puts("IT IS TO DARK TO SEE ANYTHING")
       else
         puts("")
+        puts("Room: #{currentRoomInfo['room_name']}")
         puts(currentRoomInfo['room_desc'])
       end
       treasure = currentRoomInfo['treasure_value']
@@ -286,13 +293,13 @@ class Game
       loop do
         puts('WHICH WAY DO YOU WANT TO FLEE?')
         move = get_movement
-         if isPossibleMove(move, infoRoom)
-        move(move, infoRoom)
-        return true
-      else
-        p errorMove(move)
-        return false
-      end
+        if isPossibleMove(move, infoRoom)
+          move(move, infoRoom)
+          return true
+        else
+          p errorMove(move)
+          return false
+        end
       end
     elsif(monster != 0 && move == "R" && flee < 0.6)
       puts('NO YOU MUST STAND AND FIGHT')
@@ -754,8 +761,9 @@ class Game
         gets.to_i
     end
 end
-
+#Create a instance of the game in a variable
 game = Game.new
+#Call the game menu to start the game
 game.menu
 
 
